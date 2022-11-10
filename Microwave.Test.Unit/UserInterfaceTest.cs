@@ -338,6 +338,7 @@ namespace Microwave.Test.Unit
             light.Received(1).TurnOff();
         }
 
+        #region feature/timeChange
         [Test]
         public void Cooking_TimeButtonPressed_TimeIncreasedBy15sec()
         {
@@ -355,6 +356,7 @@ namespace Microwave.Test.Unit
 
             display.Received(1).ShowTime(Arg.Is<int>(1), Arg.Is<int>(15));
         }
+        #endregion
 
     }
 
