@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading;
 using Microwave.Classes.Boundary;
 using Microwave.Classes.Controllers;
+using Timer = Microwave.Classes.Boundary.Timer;
 
 namespace Microwave.App
 {
@@ -26,25 +28,24 @@ namespace Microwave.App
 
             CookController cooker = new CookController(timer, display, powerTube);
 
-            UserInterface ui = new UserInterface(powerButton, timeButton, startCancelButton, door, display, light, cooker);
+            UserInterface ui = new UserInterface(powerButton, timeButton, startCancelButton, door, display, light, cooker, timer);
 
             // Finish the double association
             cooker.UI = ui;
 
             // Simulate a simple sequence
+            while (true)
+            {
+                if (Console.KeyAvailable)
+                {
+                    var keyPressed = Console.ReadKey(true);
 
-            powerButton.Press();
-
-            timeButton.Press();
-
-            startCancelButton.Press();
-
-            // The simple sequence should now run
-
-            System.Console.WriteLine("When you press enter, the program will stop");
-            // Wait for input
-
-            System.Console.ReadLine();
+                    if (keyPressed.Key == ConsoleKey.P) powerButton.Press();
+                    if (keyPressed.Key == ConsoleKey.T) timeButton.Press();
+                    if (keyPressed.Key == ConsoleKey.S) startCancelButton.Press();
+                    if (keyPressed.Key == ConsoleKey.Escape) break;
+                }
+            }
         }
     }
 }
