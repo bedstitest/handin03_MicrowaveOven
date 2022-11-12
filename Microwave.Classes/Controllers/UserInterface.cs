@@ -25,7 +25,6 @@ namespace Microwave.Classes.Controllers
             IButton timeButton,
             IButton startCancelButton,
             IDoor door,
-            IBuzzer buzzer,
             IDisplay display,
             ILight light,
             ICookController cooker)
@@ -40,7 +39,7 @@ namespace Microwave.Classes.Controllers
             myCooker = cooker;
             myLight = light;
             myDisplay = display;
-            myBuzzer = buzzer;
+
         }
 
         private void ResetValues()

@@ -9,6 +9,7 @@ namespace Microwave.Classes.Boundary;
 
 public class buzzer : IBuzzer
 {
+
     public void CookingIsEndedSound()
     {
         Console.WriteLine("Ding, Ding, Ding! Cooking Done");
