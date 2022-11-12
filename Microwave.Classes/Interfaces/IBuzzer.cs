@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Microwave.Test.Unit
+namespace Microwave.Classes.Interfaces
 {
-    internal class buzzer
+    public interface IBuzzer
     {
+        void CookingIsEndedSound();
     }
 }
