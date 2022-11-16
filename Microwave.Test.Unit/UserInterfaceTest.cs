@@ -19,6 +19,7 @@ namespace Microwave.Test.Unit
 
         private IDisplay display;
         private ILight light;
+        private ITimer timer;
 
         private ICookController cooker;
 
@@ -32,13 +33,15 @@ namespace Microwave.Test.Unit
             light = Substitute.For<ILight>();
             display = Substitute.For<IDisplay>();
             cooker = Substitute.For<ICookController>();
+            timer = Substitute.For<ITimer>();
 
             uut = new UserInterface(
                 powerButton, timeButton, startCancelButton,
                 door,
                 display,
                 light,
-                cooker);
+                cooker,
+                timer);
         }
 
         [Test]
@@ -335,6 +338,25 @@ namespace Microwave.Test.Unit
             light.Received(1).TurnOff();
         }
 
+        #region feature/timeChange
+        [Test]
+        public void Cooking_TimeButtonPressed_TimeIncreasedBy15sec()
+        {
+            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            // Now in SetPower
+            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            // Now in SetTime
+            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            // Now in cooking
+            timer.TimeRemaining.Returns(60);
+            // Have to manually set time inside timer
+            // since the event does not directly do this 
+            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            // Add more time
+
+            display.Received(1).ShowTime(Arg.Is<int>(1), Arg.Is<int>(15));
+        }
+        #endregion
 
     }
 
