@@ -1,8 +1,8 @@
 ﻿using Microwave.Classes.Boundary;
-using Microwave.Classes.Interfaces;
 using NUnit.Framework;
 using System;
-using System.Diagnostics;
+using System.IO;
+
 
 namespace Microwave.Test.Unit;
 
@@ -15,20 +15,17 @@ public class BuzzerTest
     public void Setup()
     {
         uut = new buzzer();
-        Trace.Listeners.Add(new ConsoleTraceListener());
     }
 
-    [Test]
-    public void ConsolePrintTest()
-    {
 
-        // We don't need an assert, as an exception would fail the test case
+    [Test]
+    public void WriteToConsoleTest()
+    {
+        var stringWriter = new StringWriter();
+        Console.SetOut(stringWriter);
         uut.CookingIsEndedSound();
 
-        Debug.WriteLine("This is Debug.WriteLine");
-        Trace.WriteLine("This is Trace.WriteLine");
-        Console.WriteLine("This is Console.Writeline");
-        Assert.Pass();
+        Assert.AreEqual("Ding, Ding, Ding! Cooking Done\a\r\n", stringWriter.ToString());
     }
 
 
