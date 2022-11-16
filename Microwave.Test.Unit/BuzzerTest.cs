@@ -1,4 +1,5 @@
 ﻿using Microwave.Classes.Boundary;
+using Microwave.Classes.Interfaces;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
@@ -18,7 +19,7 @@ public class BuzzerTest
     }
 
     [Test]
-    public void Press_NoSubscribers_NoThrow()
+    public void ConsolePrintTest()
     {
 
         // We don't need an assert, as an exception would fail the test case
@@ -29,6 +30,7 @@ public class BuzzerTest
         Console.WriteLine("This is Console.Writeline");
         Assert.Pass();
     }
+
 
 
 }

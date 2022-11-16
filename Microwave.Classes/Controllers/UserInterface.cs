@@ -12,10 +12,10 @@ namespace Microwave.Classes.Controllers
         }
 
         private States myState = States.READY;
-        private IBuzzer myBuzzer;
         private ICookController myCooker;
         private ILight myLight;
         private IDisplay myDisplay;
+        private IBuzzer myBuzzer;   
         private ITimer myTimer;
 
         private int powerLevel = 50;
