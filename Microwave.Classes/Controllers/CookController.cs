@@ -35,6 +35,7 @@ namespace Microwave.Classes.Controllers
             myTimer = timer;
             myDisplay = display;
             myPowerTube = powerTube;
+            myBuzzer = buzzer;
   
             
 

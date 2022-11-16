@@ -12,6 +12,6 @@ public class buzzer : IBuzzer
 
     public void CookingIsEndedSound()
     {
-        Console.WriteLine("Ding, Ding, Ding! Cooking Done");
+        Console.WriteLine("Ding, Ding, Ding! Cooking Done\a");
     }
 }
