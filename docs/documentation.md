@@ -79,6 +79,7 @@ It was decided to use the existing class diagram as a base and only add any chan
 
 <!--ADD FEATURE SEQUENCE DIAGRAM-->
 
+
 ### Time change
 
 <!--ADD FEATURE SEQUENCE DIAGRAM-->
@@ -95,7 +96,27 @@ It was decided to copy the diagram from the handout and extend it with the new f
 
 <!--Ony what, not why.
 Explain and reference to diagrams where relevant-->
+### Power Change
+
+
+#### Updating tests
+The power change feature demanded change to two classes, the UI and the powerTupe its self.
+The UI has a lot of tests, where only some of them are dependt on the configuration.
+
+Two aprroces can be taken, with in the scope of this exercise.
+The first being that each test gets the resposibility of arrange the uut.
+The second being that the set still is respossibel for creating the uut, but the test dependent on the configuration reassing the uut it needs.
+
+The second approce creats a redundent piese of code, but it ensure that the tests are a bit more maintaineble.
+Since there is fewer changes needed to be made, in case the config is changed agian.
+
+Both cases however, are not ideal. This is a brilliant exsample of the importences of a good design from the get go.
+Becuase a late change to the inital design, demands an aboundece of change. 
 
 ## Decisions
+
+
+
+
 
 

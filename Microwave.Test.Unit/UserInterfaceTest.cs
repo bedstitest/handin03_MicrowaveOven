@@ -1,4 +1,5 @@
 ﻿using System;
+using Microwave.Classes.Boundary;
 using Microwave.Classes.Controllers;
 using Microwave.Classes.Interfaces;
 using NSubstitute;
@@ -35,18 +36,19 @@ namespace Microwave.Test.Unit
             cooker = Substitute.For<ICookController>();
             timer = Substitute.For<ITimer>();
 
+        }
+
+        [Test]
+        public void Ready_DoorOpen_LightOn()
+        {
             uut = new UserInterface(
                 powerButton, timeButton, startCancelButton,
                 door,
                 display,
                 light,
                 cooker,
-                timer);
-        }
-
-        [Test]
-        public void Ready_DoorOpen_LightOn()
-        {
+                timer,
+                (int)PowerTube.Power.HighPower);
             // This test that uut has subscribed to door opened, and works correctly
             // simulating the event through NSubstitute
             door.Opened += Raise.EventWith(this, EventArgs.Empty);
@@ -56,6 +58,14 @@ namespace Microwave.Test.Unit
         [Test]
         public void DoorOpen_DoorClose_LightOff()
         {
+            uut = new UserInterface(
+                powerButton, timeButton, startCancelButton,
+                door,
+                display,
+                light,
+                cooker,
+                timer,
+                (int)PowerTube.Power.HighPower);
             // This test that uut has subscribed to door opened and closed, and works correctly
             // simulating the event through NSubstitute
             door.Opened += Raise.EventWith(this, EventArgs.Empty);
@@ -66,6 +76,14 @@ namespace Microwave.Test.Unit
         [Test]
         public void Ready_DoorOpenClose_Ready_PowerIs50()
         {
+            uut = new UserInterface(
+                powerButton, timeButton, startCancelButton,
+                door,
+                display,
+                light,
+                cooker,
+                timer,
+                (int)PowerTube.Power.HighPower);
             // This test that uut has subscribed to power button, and works correctly
             // simulating the events through NSubstitute
             door.Opened += Raise.EventWith(this, EventArgs.Empty);
@@ -78,25 +96,55 @@ namespace Microwave.Test.Unit
         [Test]
         public void Ready_2PowerButton_PowerIs100()
         {
+            uut = new UserInterface(
+                powerButton, timeButton, startCancelButton,
+                door,
+                display,
+                light,
+                cooker,
+                timer,
+                (int)PowerTube.Power.HighPower);
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             display.Received(1).ShowPower(Arg.Is<int>(100));
         }
 
         [Test]
-        public void Ready_14PowerButton_PowerIs700()
+        [TestCase(PowerTube.Power.LowPower)]
+        [TestCase(PowerTube.Power.MediumPower)]
+        [TestCase(PowerTube.Power.HighPower)]
+        public void Ready_14PowerButton_PowerIs700(PowerTube.Power tubeSize)
         {
-            for (int i = 1; i <= 14; i++)
+            uut = new UserInterface(
+                powerButton, timeButton, startCancelButton,
+                door,
+                display,
+                light,
+                cooker,
+                timer,
+                (int)PowerTube.Power.HighPower);
+            for (int i = 1; i <= (int)tubeSize/50; i++)
             {
                 powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             }
-            display.Received(1).ShowPower(Arg.Is<int>(700));
+            display.Received(1).ShowPower(Arg.Is<int>((int)tubeSize));
         }
 
         [Test]
-        public void Ready_15PowerButton_PowerIs50Again()
+        [TestCase(PowerTube.Power.LowPower)]
+        [TestCase(PowerTube.Power.MediumPower)]
+        [TestCase(PowerTube.Power.HighPower)]
+        public void Ready_15PowerButton_PowerIs50Again(PowerTube.Power tubeSize)
         {
-            for (int i = 1; i <= 15; i++)
+            uut = new UserInterface(
+                powerButton, timeButton, startCancelButton,
+                door,
+                display,
+                light,
+                cooker,
+                timer,
+                (int)tubeSize);
+            for (int i = 1; i <= (int)tubeSize+1; i++)
             {
                 powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             }
@@ -108,6 +156,14 @@ namespace Microwave.Test.Unit
         [Test]
         public void SetPower_CancelButton_DisplayCleared()
         {
+            uut = new UserInterface(
+                powerButton, timeButton, startCancelButton,
+                door,
+                display,
+                light,
+                cooker,
+                timer,
+                (int)PowerTube.Power.HighPower);
             // Also checks if TimeButton is subscribed
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now in SetPower
@@ -119,6 +175,14 @@ namespace Microwave.Test.Unit
         [Test]
         public void SetPower_DoorOpened_DisplayCleared()
         {
+            uut = new UserInterface(
+                powerButton, timeButton, startCancelButton,
+                door,
+                display,
+                light,
+                cooker,
+                timer,
+                (int)PowerTube.Power.HighPower);
             // Also checks if TimeButton is subscribed
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now in SetPower
@@ -130,6 +194,14 @@ namespace Microwave.Test.Unit
         [Test]
         public void SetPower_DoorOpened_LightOn()
         {
+            uut = new UserInterface(
+                powerButton, timeButton, startCancelButton,
+                door,
+                display,
+                light,
+                cooker,
+                timer,
+                (int)PowerTube.Power.HighPower);
             // Also checks if TimeButton is subscribed
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now in SetPower
@@ -141,6 +213,14 @@ namespace Microwave.Test.Unit
         [Test]
         public void SetPower_TimeButton_TimeIs1()
         {
+            uut = new UserInterface(
+                powerButton, timeButton, startCancelButton,
+                door,
+                display,
+                light,
+                cooker,
+                timer,
+                (int)PowerTube.Power.HighPower);
             // Also checks if TimeButton is subscribed
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now in SetPower
@@ -152,6 +232,14 @@ namespace Microwave.Test.Unit
         [Test]
         public void SetPower_2TimeButton_TimeIs2()
         {
+            uut = new UserInterface(
+                powerButton, timeButton, startCancelButton,
+                door,
+                display,
+                light,
+                cooker,
+                timer,
+                (int)PowerTube.Power.HighPower);
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now in SetPower
             timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
@@ -163,6 +251,14 @@ namespace Microwave.Test.Unit
         [Test]
         public void SetTime_StartButton_CookerIsCalled()
         {
+            uut = new UserInterface(
+                powerButton, timeButton, startCancelButton,
+                door,
+                display,
+                light,
+                cooker,
+                timer,
+                (int)PowerTube.Power.HighPower);
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now in SetPower
             timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
@@ -175,6 +271,14 @@ namespace Microwave.Test.Unit
         [Test]
         public void SetTime_DoorOpened_DisplayCleared()
         {
+            uut = new UserInterface(
+                powerButton, timeButton, startCancelButton,
+                door,
+                display,
+                light,
+                cooker,
+                timer,
+                (int)PowerTube.Power.HighPower);
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now in SetPower
             timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
@@ -187,6 +291,14 @@ namespace Microwave.Test.Unit
         [Test]
         public void SetTime_DoorOpened_LightOn()
         {
+            uut = new UserInterface(
+                powerButton, timeButton, startCancelButton,
+                door,
+                display,
+                light,
+                cooker,
+                timer,
+                (int)PowerTube.Power.HighPower);
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now in SetPower
             timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
@@ -199,6 +311,14 @@ namespace Microwave.Test.Unit
         [Test]
         public void Ready_PowerAndTime_CookerIsCalledCorrectly()
         {
+            uut = new UserInterface(
+                powerButton, timeButton, startCancelButton,
+                door,
+                display,
+                light,
+                cooker,
+                timer,
+                (int)PowerTube.Power.HighPower);
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             // Now in SetPower
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
@@ -214,9 +334,21 @@ namespace Microwave.Test.Unit
         }
 
         [Test]
-        public void Ready_FullPower_CookerIsCalledCorrectly()
+        [TestCase(PowerTube.Power.LowPower)]
+        [TestCase(PowerTube.Power.MediumPower)]
+        [TestCase(PowerTube.Power.HighPower)]
+        public void Ready_FullPower_CookerIsCalledCorrectly(PowerTube.Power tubeSize)
         {
-            for (int i = 50; i <= 700; i += 50)
+            uut = new UserInterface(
+                powerButton, timeButton, startCancelButton,
+                door,
+                display,
+                light,
+                cooker,
+                timer,
+                (int)tubeSize);
+            
+            for (int i = 50; i <= (int)tubeSize; i += 50)
             {
                 powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             }
@@ -227,7 +359,7 @@ namespace Microwave.Test.Unit
             // Should call with correct values
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
-            cooker.Received(1).StartCooking(700, 60);
+            cooker.Received(1).StartCooking((int)tubeSize, 60);
 
         }
 
