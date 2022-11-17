@@ -81,7 +81,7 @@ It was decided to use the existing class diagram as a base and only add any chan
 
 ### Time change
 
-<!--ADD FEATURE SEQUENCE DIAGRAM-->
+![sd_feature-timeChange](figs/sd_feature-timeChange.svg)
 
 ## Updated state machine diagram
 
@@ -89,12 +89,23 @@ It was decided to copy the diagram from the handout and extend it with the new f
 
 <!--ADD STATE MACHINE DIAGRAM FOR USER INTERFACE-->
 
-<!--### Other STM's??-->
+<!--### Other STM's if relevant-->
 
 ## Description of changes and additions
 
 <!--Ony what, not why.
 Explain and reference to diagrams where relevant-->
+
+### Buzzer
+
+### Power change
+
+### Time change
+
+The only things added to the code are 
+- `UserInterface` has a reference to the `Timer` to make it possible to add time while cooking.
+- In the `UserInterface` state machine (switch case), the logic for adding time while in state `cooking` was addded. 
+- The `Timer` classes property TimeRemaining was changed to have a public setter instead of the private in the original.
 
 ## Decisions
 
