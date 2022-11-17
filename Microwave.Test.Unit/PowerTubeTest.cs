@@ -20,13 +20,24 @@ namespace Microwave.Test.Unit
             uut = new PowerTube(output);
         }
 
-        [TestCase(1)]
-        [TestCase(50)]
-        [TestCase(100)]
-        [TestCase(699)]
-        [TestCase(700)]
-        public void TurnOn_WasOffCorrectPower_CorrectOutput(int power)
+        [TestCase(PowerTube.Power.LowPower, 1)]
+        [TestCase(PowerTube.Power.LowPower, 50)]
+        [TestCase(PowerTube.Power.LowPower, 100)]
+        [TestCase(PowerTube.Power.LowPower,(int)PowerTube.Power.LowPower-1)]
+        [TestCase(PowerTube.Power.LowPower,(int)PowerTube.Power.LowPower)]
+        [TestCase(PowerTube.Power.MediumPower, 1)]
+        [TestCase(PowerTube.Power.MediumPower, 50)]
+        [TestCase(PowerTube.Power.MediumPower, 100)]
+        [TestCase(PowerTube.Power.MediumPower,(int)PowerTube.Power.MediumPower-1)]
+        [TestCase(PowerTube.Power.MediumPower,(int)PowerTube.Power.MediumPower)]
+        [TestCase(PowerTube.Power.HighPower, 1)]
+        [TestCase(PowerTube.Power.HighPower, 50)]
+        [TestCase(PowerTube.Power.HighPower, 100)]
+        [TestCase(PowerTube.Power.HighPower,(int)PowerTube.Power.HighPower-1)]
+        [TestCase(PowerTube.Power.HighPower,(int)PowerTube.Power.HighPower)]
+        public void TurnOn_WasOffCorrectPower_CorrectOutput(PowerTube.Power tubeSize, int power)
         {
+            uut = new PowerTube(output, tubeSize);
             uut.TurnOn(power);
             output.Received().OutputLine(Arg.Is<string>(str => str.Contains($"{power}")));
         }
