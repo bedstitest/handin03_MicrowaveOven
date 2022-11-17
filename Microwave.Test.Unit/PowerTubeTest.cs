@@ -1,4 +1,5 @@
-﻿using Microwave.Classes.Boundary;
+﻿using System;
+using Microwave.Classes.Boundary;
 using Microwave.Classes.Interfaces;
 using NSubstitute;
 using NSubstitute.Core.Arguments;
@@ -16,7 +17,7 @@ namespace Microwave.Test.Unit
         public void Setup()
         {
             output = Substitute.For<IOutput>();
-            uut = new PowerTube(output);
+            uut = new PowerTube(output, PowerTube.Power.HighPower);
         }
 
         [TestCase(1)]
