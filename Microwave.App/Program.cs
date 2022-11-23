@@ -16,8 +16,6 @@ namespace Microwave.App
 
             Door door = new Door();
 
-            buzzer buzzer = new buzzer();
-
             Output output = new Output();
 
             buzzer buzzer = new buzzer(output);
