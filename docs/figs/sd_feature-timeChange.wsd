@@ -1,0 +1,27 @@
+@startuml timeChange
+
+mainframe **sd** feature-timeChange
+
+participant "Client" as c
+participant "Button:\ntimeButton" as b
+participant "UserInterface" as ui
+participant "Timer" as t
+participant "Display" as d
+participant "Output" as o
+
+note over c,o : In state: Cooking
+c->b : Press()
+activate b
+b->ui : <<event>>\nOnTimePressed()
+deactivate b
+activate ui
+ui->t : TimeRemaining += 15
+ui->d : ShowTime()
+deactivate ui
+activate d
+d-> o : OutputLine()
+deactivate d
+activate o
+deactivate o
+
+@enduml

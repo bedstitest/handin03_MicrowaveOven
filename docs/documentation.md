@@ -81,7 +81,7 @@ It was decided to use the existing class diagram as a base and only add any chan
 
 ### Time change
 
-<!--ADD FEATURE SEQUENCE DIAGRAM-->
+![sd_feature-timeChange](figs/sd_feature-timeChange.svg)
 
 ## Updated state machine diagram
 
@@ -89,13 +89,37 @@ It was decided to copy the diagram from the handout and extend it with the new f
 
 <!--ADD STATE MACHINE DIAGRAM FOR USER INTERFACE-->
 
-<!--### Other STM's??-->
+<!--### Other STM's if relevant-->
 
 ## Description of changes and additions
 
 <!--Ony what, not why.
 Explain and reference to diagrams where relevant-->
 
+### Buzzer
+
+### Power change
+
+### Time change
+
+The only things added to the code are 
+- `UserInterface` has a reference to the `Timer` to make it possible to add time while cooking.
+- In the `UserInterface` state machine (switch case), the logic for adding time while in state `cooking` was addded. 
+- The `Timer` classes property TimeRemaining was changed to have a public setter instead of the private in the original.
+
 ## Decisions
 
 
+
+
+## Feature/buzzer
+
+There has been implemented a buzzer class that has the responsibility of making a 3 burst sound whenever Cooking is done.
+This is obtained by making an interface and a class that implements this interface which has 1 function "CookingIsEndedSound()".
+CookingController.cs and UserInterface.cs have been altered so as it also takes a buzzer object in its constructor parameter.
+The function CookingIsEndedSound() is then inserted in CookController.OnTimerExpired(), CookController.Stop() and UserInterface.CookingIsDone().
+
+In the tests the test.integration project was unloaded so to avoid testings conflicts.
+The BuzzerTest.cs tests the simple functionality of the buzzer class. It creates a Trace object which can catch console outputs when running the tests. This output is then asserted with the expected string value "Ding, Ding, Ding! Cooking Done\a".
+
+There has also been written a functional test in the CookingControllerTest.cs. Cooking_stopsound_CookingDone() tests if the CookingIsEndedSound() through the uut (CookController.StartCooking() function). 
