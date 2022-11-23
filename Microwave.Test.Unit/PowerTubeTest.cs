@@ -17,7 +17,7 @@ namespace Microwave.Test.Unit
         public void Setup()
         {
             output = Substitute.For<IOutput>();
-            uut = new PowerTube(output, PowerTube.Power.HighPower);
+            uut = new PowerTube(output);
         }
 
         [TestCase(1)]
