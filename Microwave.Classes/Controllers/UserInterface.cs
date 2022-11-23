@@ -26,10 +26,10 @@ namespace Microwave.Classes.Controllers
             IButton timeButton,
             IButton startCancelButton,
             IDoor door,
-            IBuzzer buzzer,
             IDisplay display,
             ILight light,
             ICookController cooker,
+            IBuzzer buzzer,
             ITimer timer)
         {
             powerButton.Pressed += new EventHandler(OnPowerPressed);
