@@ -1,4 +1,6 @@
 ﻿using Microwave.Classes.Boundary;
+using Microwave.Classes.Interfaces;
+using NSubstitute;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -9,23 +11,25 @@ namespace Microwave.Test.Unit;
 [TestFixture]
 public class BuzzerTest
 {
+    private IOutput output;
     private buzzer uut;
 
     [SetUp]
     public void Setup()
     {
-        uut = new buzzer();
+        output = Substitute.For<IOutput>();
+        uut = new buzzer(output);
     }
 
 
     [Test]
     public void WriteToConsoleTest()
     {
-        var stringWriter = new StringWriter();
-        Console.SetOut(stringWriter);
+        
         uut.CookingIsEndedSound();
 
-        Assert.AreEqual("Ding, Ding, Ding! Cooking Done\a\r\n", stringWriter.ToString());
+        output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Ding, Ding, Ding! Cooking Done")));
+        
     }
 
 

@@ -10,8 +10,15 @@ namespace Microwave.Classes.Boundary;
 public class buzzer : IBuzzer
 {
 
+    private IOutput myOutput;
+
+    public buzzer(IOutput output)
+    {
+        myOutput = output;
+    }
+
     public void CookingIsEndedSound()
     {
-        Console.WriteLine("Ding, Ding, Ding! Cooking Done\a");
+        myOutput.OutputLine("Ding, Ding, Ding! Cooking Done\a");
     }
 }
