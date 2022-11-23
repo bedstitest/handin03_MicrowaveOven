@@ -15,7 +15,6 @@ Remember to commit before tag
 
 ### Rebase features before merge.
 Commands for rebasing:
-
 1. `git switch feature/[featureName]`
 2. `git rebase main`
 3. `git switch main`

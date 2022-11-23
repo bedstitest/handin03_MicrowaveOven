@@ -16,7 +16,11 @@ namespace Microwave.App
 
             Door door = new Door();
 
+            buzzer buzzer = new buzzer();
+
             Output output = new Output();
+
+            buzzer buzzer = new buzzer(output);
 
             Display display = new Display(output);
 
@@ -26,9 +30,9 @@ namespace Microwave.App
 
             Microwave.Classes.Boundary.Timer timer = new Timer();
 
-            CookController cooker = new CookController(timer, display, powerTube);
+            CookController cooker = new CookController(buzzer, timer, display, powerTube);
 
-            UserInterface ui = new UserInterface(powerButton, timeButton, startCancelButton, door, display, light, cooker, timer);
+            UserInterface ui = new UserInterface(powerButton, timeButton, startCancelButton, door, display, light, cooker, buzzer, timer);
 
             // Finish the double association
             cooker.UI = ui;
