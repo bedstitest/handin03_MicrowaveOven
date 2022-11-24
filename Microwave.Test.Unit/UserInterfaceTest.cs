@@ -3,6 +3,7 @@ using Microwave.Classes.Boundary;
 using Microwave.Classes.Controllers;
 using Microwave.Classes.Interfaces;
 using NSubstitute;
+using NSubstitute.ClearExtensions;
 using NUnit.Framework;
 
 namespace Microwave.Test.Unit
@@ -27,6 +28,12 @@ namespace Microwave.Test.Unit
         [SetUp]
         public void Setup()
         {
+            uut = CreateUut(PowerTube.Power.MediumPower);
+        }
+
+        private UserInterface CreateUut(PowerTube.Power power)
+        {
+            
             powerButton = Substitute.For<IButton>();
             timeButton = Substitute.For<IButton>();
             startCancelButton = Substitute.For<IButton>();
@@ -43,7 +50,9 @@ namespace Microwave.Test.Unit
                 light,
                 cooker,
                 timer,
-                (int)PowerTube.Power.MediumPower);
+                (int)power);
+            
+            return uut;
         }
 
         [Test]
@@ -89,21 +98,19 @@ namespace Microwave.Test.Unit
         [TestCase(PowerTube.Power.LowPower)]
         [TestCase(PowerTube.Power.MediumPower)]
         [TestCase(PowerTube.Power.HighPower)]
-        public void Ready_14PowerButton_PowerIs700(PowerTube.Power tubeSize)
+        public void Ready_14PowerButton_PowerIsMaxTubeSize(PowerTube.Power tubeSize)
         {
-            uut = new UserInterface(
-                powerButton, timeButton, startCancelButton,
-                door,
-                display,
-                light,
-                cooker,
-                timer,
-                (int)PowerTube.Power.HighPower);
+
+            uut = CreateUut(tubeSize);
+            
             for (int i = 1; i <= (int)tubeSize/50; i++)
             {
                 powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             }
-            display.Received(1).ShowPower(Arg.Is<int>((int)tubeSize));
+            Console.WriteLine("test");
+            
+            display.Received(1).ShowPower(Arg.Is((int)tubeSize));
+            Console.WriteLine("test");
         }
 
         [Test]
@@ -112,15 +119,10 @@ namespace Microwave.Test.Unit
         [TestCase(PowerTube.Power.HighPower)]
         public void Ready_15PowerButton_PowerIs50Again(PowerTube.Power tubeSize)
         {
-            uut = new UserInterface(
-                powerButton, timeButton, startCancelButton,
-                door,
-                display,
-                light,
-                cooker,
-                timer,
-                (int)tubeSize);
-            for (int i = 1; i <= (int)tubeSize+1; i++)
+
+            uut = CreateUut(tubeSize);
+            
+            for (int i = 1; i <= (int)tubeSize/50+1; i++)
             {
                 powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             }
@@ -243,14 +245,7 @@ namespace Microwave.Test.Unit
         [TestCase(PowerTube.Power.HighPower)]
         public void Ready_FullPower_CookerIsCalledCorrectly(PowerTube.Power tubeSize)
         {
-            uut = new UserInterface(
-                powerButton, timeButton, startCancelButton,
-                door,
-                display,
-                light,
-                cooker,
-                timer,
-                (int)tubeSize);
+            uut = CreateUut(tubeSize);
             
             for (int i = 50; i <= (int)tubeSize; i += 50)
             {
