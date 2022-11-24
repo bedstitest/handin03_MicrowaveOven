@@ -17,8 +17,8 @@ namespace Microwave.Test.Unit
         public void Setup()
         {
             output = Substitute.For<IOutput>();
-            uut = new PowerTube(output);
         }
+        
 
         [TestCase(PowerTube.Power.LowPower, 1)]
         [TestCase(PowerTube.Power.LowPower, 50)]
@@ -42,19 +42,31 @@ namespace Microwave.Test.Unit
             output.Received().OutputLine(Arg.Is<string>(str => str.Contains($"{power}")));
         }
 
-        [TestCase(-5)]
-        [TestCase(-1)]
-        [TestCase(0)]
-        [TestCase(701)]
-        [TestCase(750)]
-        public void TurnOn_WasOffOutOfRangePower_ThrowsException(int power)
+        [TestCase(PowerTube.Power.LowPower, -5)]
+        [TestCase(PowerTube.Power.LowPower, -1)]
+        [TestCase(PowerTube.Power.LowPower, 0)]
+        [TestCase(PowerTube.Power.LowPower,(int)PowerTube.Power.LowPower+1)]
+        [TestCase(PowerTube.Power.LowPower,(int)PowerTube.Power.LowPower+50)]
+        [TestCase(PowerTube.Power.MediumPower, -5)]
+        [TestCase(PowerTube.Power.MediumPower, -1)]
+        [TestCase(PowerTube.Power.MediumPower, 0)]
+        [TestCase(PowerTube.Power.MediumPower,(int)PowerTube.Power.MediumPower+1)]
+        [TestCase(PowerTube.Power.MediumPower,(int)PowerTube.Power.MediumPower+50)]
+        [TestCase(PowerTube.Power.HighPower, -5)]
+        [TestCase(PowerTube.Power.HighPower, -1)]
+        [TestCase(PowerTube.Power.HighPower, 0)]
+        [TestCase(PowerTube.Power.HighPower,(int)PowerTube.Power.HighPower+1)]
+        [TestCase(PowerTube.Power.HighPower,(int)PowerTube.Power.HighPower+50)]
+        public void TurnOn_WasOffOutOfRangePower_ThrowsException(PowerTube.Power tubeSize,int power)
         {
+            uut = new PowerTube(output, tubeSize);
             Assert.Throws<System.ArgumentOutOfRangeException>(() => uut.TurnOn(power));
         }
 
         [Test]
         public void TurnOff_WasOn_CorrectOutput()
         {
+            uut = new PowerTube(output, PowerTube.Power.HighPower);
             uut.TurnOn(50);
             uut.TurnOff();
             output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
@@ -63,6 +75,7 @@ namespace Microwave.Test.Unit
         [Test]
         public void TurnOff_WasOff_NoOutput()
         {
+            uut = new PowerTube(output, PowerTube.Power.HighPower);
             uut.TurnOff();
             output.DidNotReceive().OutputLine(Arg.Any<string>());
         }
@@ -70,6 +83,7 @@ namespace Microwave.Test.Unit
         [Test]
         public void TurnOn_WasOn_ThrowsException()
         {
+            uut = new PowerTube(output, PowerTube.Power.HighPower);
             uut.TurnOn(50);
             Assert.Throws<System.ApplicationException>(() => uut.TurnOn(60));
         }

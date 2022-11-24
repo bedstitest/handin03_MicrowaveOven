@@ -31,6 +31,7 @@ namespace Microwave.Classes.Controllers
             ILight light,
             ICookController cooker,
             ITimer timer,
+            IBuzzer buzzer,
             int powerTubeSize)
         {
             powerButton.Pressed += new EventHandler(OnPowerPressed);

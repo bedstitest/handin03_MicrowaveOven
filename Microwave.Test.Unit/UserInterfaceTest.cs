@@ -51,8 +51,8 @@ namespace Microwave.Test.Unit
                 display,
                 light,
                 cooker,
-                buzzer,
                 timer,
+                buzzer,
                 (int)power);
             return uut;
         }
