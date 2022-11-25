@@ -54,6 +54,26 @@ There are a total of 4 branches. The different brances are:
 4. feature/timeChange
 
 
+### Tags
+Add tags on features for milestones such as:
+1. When the solution can compile
+2. Partial features
+3. Addition of tests
+WHERE IT MAKES SENSE :)
+
+Remember to commit before tag
+1. `git add -A`
+2. `git commit -m "{Commit Message}"` 
+3. `git tag -a {tagID} -m "{tagMessage}"` 
+
+
+### Rebase features before merge.
+Commands for rebasing:
+1. `git switch feature/[featureName]`
+2. `git rebase main`
+3. `git switch main`
+4. `git merge feature/[featureName]`
+
 ## Jenkins jobs
 
 There are a total of 4 jobs - one for each branch. Links to the different jobs:
@@ -67,8 +87,6 @@ There are a total of 4 jobs - one for each branch. Links to the different jobs:
 
 It was decided to use the existing class diagram as a base and only add any changes we made to it.
 
-### Buzzer
-
 ![cd_feature-Buzzer](figs/MicrowaveClasses.svg)
 
 ## Sequence diagrams
@@ -80,29 +98,35 @@ It was decided to use the existing class diagram as a base and only add any chan
 ![sd_feature-Buzzer_extension](figs/MicrowaveSeqExtensions_featureBuzzer.svg)
 
 
-### Power change
-
-<!--ADD FEATURE SEQUENCE DIAGRAM-->
-
 
 ### Time change
 
 ![sd_feature-timeChange](figs/sd_feature-timeChange.svg)
 
+### Power change
+
+there is no behavioral change added with the power tube Refractoring
+
 ## Updated state machine diagram
 
 It was decided to copy the diagram from the handout and extend it with the new features. Additions are colored blue.
 
-<!--ADD STATE MACHINE DIAGRAM FOR USER INTERFACE-->
+![stm](figs/stateMachine.svg)
 
-<!--### Other STM's if relevant-->
+
 
 ## Description of changes and additions
 
-<!--Ony what, not why.
-Explain and reference to diagrams where relevant-->
 ### Power Change
 
+The power change feature requirements where that the microwave should be able to be buildt with different Watt sizes of powertubes.
+The first change was then simply to add a property to the powerTube class.
+This property was restricted to a fixed amout of enums, to ensure the power level fittet with real power tubes. 
+The checks involving the max watt level where changed to depent on this property. 
+This entralied enjecting the value in the user interface aswell. 
+
+Since there now is two dependentsies involving the same configuration value, an argument for a dedicted factory methoed can be made.
+This would ensure that the oven would be configured correctly. This is an inprovement that can be made in later iterations.
 
 #### Updating tests
 The power change feature demanded change to two classes, the UI and the powerTupe its self.
@@ -118,6 +142,17 @@ Since there is fewer changes needed to be made, in case the config is changed ag
 Both cases however, are not ideal. This is a brilliant exsample of the importences of a good design from the get go.
 Becuase a late change to the inital design, demands an aboundece of change. 
 
+##### Funcy test errors
+
+The chosen approce of overriding the uut in the test that need varibal configuration, introduces a very strange error. 
+evt. it was discovered that the uut is was replaced, but its dependencties had registred with the different event handlers. 
+Now, once an event was raised, both the onld and the new event handlers reacted, causing each call to be called twice. 
+
+To deal with this problem, a uut factory methoed was created. 
+This factory created all the dependentsies and the uut as new object, ensuring all the references to the old object was broken. 
+
+
+
 ### Buzzer
 
 There has been implemented a buzzer class that has the responsibility of making a 3 burst sound whenever Cooking is done.
@@ -130,7 +165,6 @@ The BuzzerTest.cs tests the simple functionality of the buzzer class. It creates
 
 There has also been written a functional test in the CookingControllerTest.cs. Cooking_stopsound_CookingDone() tests if the CookingIsEndedSound() through the uut (CookController.StartCooking() function). 
 
-### Power change
 
 ### Time change
 
